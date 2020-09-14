@@ -5,6 +5,7 @@
 import React from "react";
 import ToolbarItem from "./toolbar-draggable-item";
 import ID from "./UUID";
+const shortid = require("shortid");
 import store from "./stores/store";
 
 export default class Toolbar extends React.Component {
@@ -26,17 +27,17 @@ export default class Toolbar extends React.Component {
           {
             value: "place_holder_option_1",
             text: "Place holder option 1",
-            key: `dropdown_option_${ID.uuid()}`,
+            key: `dropdown_option_${shortid.generate()}`,
           },
           {
             value: "place_holder_option_2",
             text: "Place holder option 2",
-            key: `dropdown_option_${ID.uuid()}`,
+            key: `dropdown_option_${shortid.generate()}`,
           },
           {
             value: "place_holder_option_3",
             text: "Place holder option 3",
-            key: `dropdown_option_${ID.uuid()}`,
+            key: `dropdown_option_${shortid.generate()}`,
           },
         ];
       case "Tags":
@@ -44,17 +45,17 @@ export default class Toolbar extends React.Component {
           {
             value: "place_holder_tag_1",
             text: "Place holder tag 1",
-            key: `tags_option_${ID.uuid()}`,
+            key: `tags_option_${shortid.generate()}`,
           },
           {
             value: "place_holder_tag_2",
             text: "Place holder tag 2",
-            key: `tags_option_${ID.uuid()}`,
+            key: `tags_option_${shortid.generate()}`,
           },
           {
             value: "place_holder_tag_3",
             text: "Place holder tag 3",
-            key: `tags_option_${ID.uuid()}`,
+            key: `tags_option_${shortid.generate()}`,
           },
         ];
       case "Checkboxes":
@@ -62,17 +63,17 @@ export default class Toolbar extends React.Component {
           {
             value: "place_holder_option_1",
             text: "Place holder option 1",
-            key: `checkboxes_option_${ID.uuid()}`,
+            key: `checkboxes_option_${shortid.generate()}`,
           },
           {
             value: "place_holder_option_2",
             text: "Place holder option 2",
-            key: `checkboxes_option_${ID.uuid()}`,
+            key: `checkboxes_option_${shortid.generate()}`,
           },
           {
             value: "place_holder_option_3",
             text: "Place holder option 3",
-            key: `checkboxes_option_${ID.uuid()}`,
+            key: `checkboxes_option_${shortid.generate()}`,
           },
         ];
       case "RadioButtons":
@@ -80,17 +81,17 @@ export default class Toolbar extends React.Component {
           {
             value: "place_holder_option_1",
             text: "Place holder option 1",
-            key: `radiobuttons_option_${ID.uuid()}`,
+            key: `radiobuttons_option_${shortid.generate()}`,
           },
           {
             value: "place_holder_option_2",
             text: "Place holder option 2",
-            key: `radiobuttons_option_${ID.uuid()}`,
+            key: `radiobuttons_option_${shortid.generate()}`,
           },
           {
             value: "place_holder_option_3",
             text: "Place holder option 3",
-            key: `radiobuttons_option_${ID.uuid()}`,
+            key: `radiobuttons_option_${shortid.generate()}`,
           },
         ];
       default:
@@ -267,7 +268,7 @@ export default class Toolbar extends React.Component {
 
   create(item) {
     const elementOptions = {
-      id: ID.uuid(),
+      id: shortid.generate(),
       element: item.element || item.key,
       text: item.name,
       static: item.static,
@@ -343,7 +344,7 @@ export default class Toolbar extends React.Component {
     }
 
     if (item.field_name) {
-      elementOptions.field_name = item.field_name + ID.uuid();
+      elementOptions.field_name = item.field_name + shortid.generate();
     }
 
     if (item.label) {

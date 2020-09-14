@@ -1,12 +1,12 @@
 /**
-  * <Preview />
-  */
+ * <Preview />
+ */
 
-import React from 'react';
-import update from 'immutability-helper';
-import store from './stores/store';
-import FormElementsEdit from './form-elements-edit';
-import SortableFormElements from './sortable-form-elements';
+import React from "react";
+import update from "immutability-helper";
+import store from "./stores/store";
+import FormElementsEdit from "./form-elements-edit";
+import SortableFormElements from "./sortable-form-elements";
 
 const { PlaceHolder } = SortableFormElements;
 
@@ -25,7 +25,7 @@ export default class Preview extends React.Component {
     this.seq = 0;
 
     const onUpdate = this._onChange.bind(this);
-    store.subscribe(state => onUpdate(state.data));
+    store.subscribe((state) => onUpdate(state.data));
 
     this.moveCard = this.moveCard.bind(this);
     this.insertCard = this.insertCard.bind(this);
@@ -33,25 +33,25 @@ export default class Preview extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.data !== nextProps.data) {
-      store.dispatch('updateOrder', nextProps.data);
+      store.dispatch("updateOrder", nextProps.data);
     }
   }
 
   componentDidMount() {
     const { data, url, saveUrl } = this.props;
-    store.dispatch('load', { loadUrl: url, saveUrl, data: data || [] });
-    document.addEventListener('mousedown', this.editModeOff);
+    store.dispatch("load", { loadUrl: url, saveUrl, data: data || [] });
+    document.addEventListener("mousedown", this.editModeOff);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this.editModeOff);
+    document.removeEventListener("mousedown", this.editModeOff);
   }
 
   editModeOff = (e) => {
     if (this.editForm.current && !this.editForm.current.contains(e.target)) {
       this.manualEditModeOff();
     }
-  }
+  };
 
   manualEditModeOff = () => {
     const { editElement } = this.props;
@@ -60,10 +60,10 @@ export default class Preview extends React.Component {
       this.updateElement(editElement);
     }
     this.props.manualEditModeOff();
-  }
+  };
 
   _setValue(text) {
-    return text.replace(/[^A-Z0-9]+/ig, '_').toLowerCase();
+    return text.replace(/[^A-Z0-9]+/gi, "_").toLowerCase();
   }
 
   updateElement(element) {
@@ -80,14 +80,14 @@ export default class Preview extends React.Component {
 
     if (found) {
       this.seq = this.seq > 100000 ? 0 : this.seq + 1;
-      store.dispatch('updateOrder', data);
+      store.dispatch("updateOrder", data);
     }
   }
 
   _onChange(data) {
     const answer_data = {};
 
-    data.forEach((item) => {
+    data.map((item) => {
       if (item && item.readOnly && this.props.variables[item.variableKey]) {
         answer_data[item.field_name] = this.props.variables[item.variableKey];
       }
@@ -100,7 +100,7 @@ export default class Preview extends React.Component {
   }
 
   _onDestroy(item) {
-    store.dispatch('delete', item);
+    store.dispatch("delete", item);
   }
 
   insertCard(item, hoverIndex) {
@@ -123,36 +123,74 @@ export default class Preview extends React.Component {
   saveData(dragCard, dragIndex, hoverIndex) {
     const newData = update(this.state, {
       data: {
-        $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard]],
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragCard],
+        ],
       },
     });
     this.setState(newData);
-    store.dispatch('updateOrder', newData.data);
+    store.dispatch("updateOrder", newData.data);
   }
 
   getElement(item, index) {
     const SortableFormElement = SortableFormElements[item.element];
-    return <SortableFormElement id={item.id} seq={this.seq} index={index} moveCard={this.moveCard} insertCard={this.insertCard} mutable={false} parent={this.props.parent} editModeOn={this.props.editModeOn} isDraggable={true} key={item.id} sortData={item.id} data={item} _onDestroy={this._onDestroy} />;
+    return (
+      <SortableFormElement
+        id={item.id}
+        seq={this.seq}
+        index={index}
+        moveCard={this.moveCard}
+        insertCard={this.insertCard}
+        mutable={false}
+        parent={this.props.parent}
+        editModeOn={this.props.editModeOn}
+        isDraggable={true}
+        key={item.id}
+        sortData={item.id}
+        data={item}
+        _onDestroy={this._onDestroy}
+      />
+    );
   }
 
   render() {
     let classes = this.props.className;
-    if (this.props.editMode) { classes += ' is-editing'; }
-    const data = this.state.data.filter(x => !!x);
+    if (this.props.editMode) {
+      classes += " is-editing";
+    }
+    const data = this.state.data.filter((x) => !!x);
     const items = data.map((item, index) => this.getElement(item, index));
     return (
       <div className={classes}>
         <div className="edit-form" ref={this.editForm}>
-          { this.props.editElement !== null &&
-            <FormElementsEdit showCorrectColumn={this.props.showCorrectColumn} files={this.props.files} manualEditModeOff={this.manualEditModeOff} preview={this} element={this.props.editElement} updateElement={this.updateElement} />
-          }
+          {this.props.editElement !== null && (
+            <FormElementsEdit
+              showCorrectColumn={this.props.showCorrectColumn}
+              files={this.props.files}
+              manualEditModeOff={this.manualEditModeOff}
+              preview={this}
+              element={this.props.editElement}
+              updateElement={this.updateElement}
+            />
+          )}
         </div>
         <div className="Sortable">{items}</div>
-         <PlaceHolder id="form-place-holder" show={items.length === 0} index={items.length} moveCard={this.cardPlaceHolder} insertCard={this.insertCard}/>
+        <PlaceHolder
+          id="form-place-holder"
+          show={items.length === 0}
+          index={items.length}
+          moveCard={this.cardPlaceHolder}
+          insertCard={this.insertCard}
+        />
       </div>
     );
   }
 }
 Preview.defaultProps = {
-  showCorrectColumn: false, files: [], editMode: false, editElement: null, className: 'react-form-builder-preview float-left',
+  showCorrectColumn: false,
+  files: [],
+  editMode: false,
+  editElement: null,
+  className: "react-form-builder-preview float-left",
 };

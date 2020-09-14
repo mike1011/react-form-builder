@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { findDOMNode } from 'react-dom';
-import { DragSource, DropTarget } from 'react-dnd';
-import ItemTypes from './ItemTypes';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { findDOMNode } from "react-dom";
+import { DragSource, DropTarget } from "react-dnd";
+import ItemTypes from "./ItemTypes";
 
 const style = {
-  border: '1px dashed gray',
-  padding: '0.5rem 1rem',
-  marginBottom: '.5rem',
-  backgroundColor: 'white',
-  cursor: 'move',
+  // border: '1px dashed gray',
+  display: "block",
+  padding: "0.5rem 1rem",
+  marginBottom: ".5rem",
+  backgroundColor: "white",
+  cursor: "move",
 };
 
 const cardSource = {
@@ -30,7 +31,8 @@ const cardTarget = {
     // Don't replace items with themselves
     if (dragIndex === hoverIndex) {
       return;
-    } if (dragIndex === -1) {
+    }
+    if (dragIndex === -1) {
       item.index = hoverIndex;
       props.insertCard(item.onCreate(item.data), hoverIndex);
     }
@@ -84,27 +86,30 @@ export default function (ComposedComponent) {
       // text: PropTypes.string.isRequired,
       moveCard: PropTypes.func.isRequired,
       seq: PropTypes.number,
-    }
+    };
 
     static defaultProps = {
       seq: -1,
     };
 
     render() {
-      const {
-        isDragging,
-        connectDragSource,
-        connectDropTarget,
-      } = this.props;
+      const { isDragging, connectDragSource, connectDropTarget } = this.props;
       const opacity = isDragging ? 0 : 1;
 
       return connectDragSource(
-        connectDropTarget(<div><ComposedComponent {...this.props} style={{ ...style, opacity }}></ComposedComponent></div>),
+        connectDropTarget(
+          <div>
+            <ComposedComponent
+              {...this.props}
+              style={{ ...style, opacity }}
+            ></ComposedComponent>
+          </div>
+        )
       );
     }
   }
 
-  const x = DropTarget(ItemTypes.CARD, cardTarget, connect => ({
+  const x = DropTarget(ItemTypes.CARD, cardTarget, (connect) => ({
     connectDropTarget: connect.dropTarget(),
   }))(Card);
   return DragSource(ItemTypes.CARD, cardSource, (connect, monitor) => ({
