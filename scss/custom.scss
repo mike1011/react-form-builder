@@ -1,0 +1,85 @@
+.react-form-builder > div {
+  display: flex;
+  align-items: flex-start;
+}
+.modal {
+  background: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+}
+.modal-content {
+  padding: 30px;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.react-form-builder {
+  .react-form-builder-toolbar {
+    position: relative;
+    right: 60px;
+    ul {
+      max-height: 100vh;
+      overflow-y: auto;
+      li {
+        &:hover,
+        &:focus {
+          background: #fdd935;
+        }
+      }
+    }
+  }
+  .react-form-builder-preview {
+    .Sortable .rfb-item.SortableItem {
+      position: relative;
+      box-shadow: 1px 5px 9px 1px #ccc;
+      &:hover,
+      &:focus {
+        background: #fdd935;
+        .badge-custom {
+          border-radius: 0;
+          border: 1px solid #777;
+        }
+      }
+    }
+    .badge-custom {
+      border-radius: 0;
+    }
+    .edit-form {
+      h4 {
+        width: 98%;
+        display: inline-block;
+        font-weight: bolder;
+        text-transform: uppercase;
+      }
+      .custom-control.custom-checkbox {
+        input {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+////==========================/ common styles /=====================================////
+.react-datepicker {
+  font-size: 1rem !important;
+  width: 200px !important;
+}
+.react-datepicker__month-container {
+  width: 100%;
+}
+.btn.is-isolated.btn-school {
+  &:hover,
+  &:focus {
+    border: 2px solid #fdd935 !important;
+    i {
+      color: #111;
+    }
+  }
+}
+.custom-control.custom-checkbox,
+.custom-control.custom-radio {
+  input {
+    margin-right: 10px;
+  }
+}
