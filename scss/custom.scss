@@ -90,3 +90,12 @@
     margin-right: 10px;
   }
 }
+label.custom-label {
+  position: relative;
+  width: 100%;
+  .badge {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
