@@ -453,7 +453,10 @@ export default class FormElementsEdit extends React.Component {
       canHaveOptionValue,
     } = this.props.element;
 
-    const this_files = this.props.files.length ? this.props.files : [];
+    let temp_file_data = { id: 1, file_name: "Just a Test file" };
+    const this_files = this.props.files.length
+      ? this.props.files
+      : [temp_file_data];
     if (
       this_files.length < 1 ||
       (this_files.length > 0 && this_files[0].id !== "")
@@ -559,43 +562,52 @@ export default class FormElementsEdit extends React.Component {
                     "checked"
                   )}
                 />
-                <label className="custom-control-label" htmlFor="do-center">
+                <label
+                  className="custom-control-label control-edit"
+                  htmlFor="do-center"
+                >
                   Center?
                 </label>
               </div>
             </div>
-            <div className="row">
-              <div className="col-sm-3">
-                <label
-                  className="control-label control-edit"
-                  htmlFor="elementWidth"
-                >
-                  Width:
-                </label>
-                <input
-                  id="elementWidth"
-                  type="text"
-                  className="form-control"
-                  defaultValue={this.props.element.width}
-                  onBlur={this.updateElement.bind(this)}
-                  onChange={this.editElementProp.bind(this, "width", "value")}
-                />
-              </div>
-              <div className="col-sm-3">
-                <label
-                  className="control-label control-edit"
-                  htmlFor="elementHeight"
-                >
-                  Height:
-                </label>
-                <input
-                  id="elementHeight"
-                  type="text"
-                  className="form-control"
-                  defaultValue={this.props.element.height}
-                  onBlur={this.updateElement.bind(this)}
-                  onChange={this.editElementProp.bind(this, "height", "value")}
-                />
+            <div className="form-group">
+              <div className="row">
+                <div className="col-sm-3">
+                  <label
+                    className="control-label control-edit"
+                    htmlFor="elementWidth"
+                  >
+                    Width:
+                  </label>
+                  <input
+                    id="elementWidth"
+                    type="text"
+                    className="form-control"
+                    defaultValue={this.props.element.width}
+                    onBlur={this.updateElement.bind(this)}
+                    onChange={this.editElementProp.bind(this, "width", "value")}
+                  />
+                </div>
+                <div className="col-sm-3">
+                  <label
+                    className="control-label control-edit"
+                    htmlFor="elementHeight"
+                  >
+                    Height:
+                  </label>
+                  <input
+                    id="elementHeight"
+                    type="text"
+                    className="form-control"
+                    defaultValue={this.props.element.height}
+                    onBlur={this.updateElement.bind(this)}
+                    onChange={this.editElementProp.bind(
+                      this,
+                      "height",
+                      "value"
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>

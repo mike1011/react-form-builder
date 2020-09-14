@@ -37,7 +37,7 @@ const ComponentLabel = (props) => {
     !props.read_only;
 
   return (
-    <label className={props.className || ""}>
+    <label className={`${props.className} label` || ""}>
       <span
         dangerouslySetInnerHTML={{ __html: myxss.process(props.data.label) }}
       />
@@ -857,9 +857,10 @@ class Download extends React.Component {
         <div className="form-group">
           <a
             href={`${this.props.download_path}?id=${this.props.data.file_path}`}
-          >
-            {this.props.data.content}
-          </a>
+            dangerouslySetInnerHTML={{
+              __html: this.props.data.content,
+            }}
+          />
         </div>
       </div>
     );

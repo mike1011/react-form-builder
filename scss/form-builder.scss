@@ -286,6 +286,7 @@
 
 .image-upload-container {
   position: relative;
+  margin: 0 0 60px 0;
   .image-upload {
     position: relative;
     opacity: 0;
@@ -298,17 +299,32 @@
     top: 0px;
     left: 0px;
     z-index: 1;
+    border: 1px solid #ddd;
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
   }
 }
 
 .image-upload-preview {
   border: 4px solid #fff;
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 2px 2px 2px 2px;
 }
 
 .btn-image-clear {
-  margin: 15px 0;
-  padding: 15px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 0.7rem;
+  background: #fff000;
+  border-radius: 40px;
+  padding: 3px 12px;
+  word-spacing: 2px;
+  margin: 0;
 }
 
 @media (max-width: $screen-sm-min) {
