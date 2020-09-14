@@ -37,7 +37,7 @@ const ComponentLabel = (props) => {
     !props.read_only;
 
   return (
-    <label className={`${props.className} label` || ""}>
+    <label className={`${props.className} custom-label` || ""}>
       <span
         dangerouslySetInnerHTML={{ __html: myxss.process(props.data.label) }}
       />
