@@ -145,3 +145,24 @@ label.custom-label {
 .rdw-embedded-modal {
   height: 200px;
 }
+
+.react-star-rating__root {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  input {
+    border: none;
+    background: #fff;
+    font-size: 2.2rem;
+    padding: 0;
+    margin-left: 40px;
+  }
+}
+.slider .slider-track {
+  .slider-selection {
+    background: #4fe44f;
+  }
+  .slider-track-high {
+    background: #d8474733;
+  }
+}
