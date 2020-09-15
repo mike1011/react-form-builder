@@ -166,3 +166,28 @@ label.custom-label {
     background: #d8474733;
   }
 }
+
+/////f0r validation errors
+.validation-error {
+  padding: 30px;
+  box-shadow: 1px 1px 10px 2px #11111196;
+  .clearfix {
+    width: 100%;
+    display: block;
+    .fa-exclamation-triangle {
+      font-size: 2rem;
+    }
+    ul.float-left li {
+      &:before {
+        position: relative;
+        content: "✓";
+        width: 22px;
+      }
+      display: flex;
+      justify-content: flex-start;
+    }
+    .btn-danger {
+      color: #fff;
+    }
+  }
+}
