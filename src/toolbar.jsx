@@ -222,7 +222,7 @@ export default class Toolbar extends React.Component {
         canReadOnly: true,
         name: "Signature",
         icon: "fas fa-pen-square",
-        label: "Edit Signature",
+        label: "Add Signature",
         field_name: "signature_",
       },
       {

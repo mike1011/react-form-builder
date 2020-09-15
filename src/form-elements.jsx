@@ -542,14 +542,16 @@ class Signature extends React.Component {
           {this.props.read_only === true || !!sourceDataURL ? (
             <img src={sourceDataURL} />
           ) : (
-            <SignaturePad {...pad_props} />
-          )}
-          {canClear && (
-            <i
-              className="fas fa-times clear-signature"
-              onClick={this.clear}
-              title="Clear Signature"
-            ></i>
+            <div className="signature-canvas">
+              <SignaturePad {...pad_props} />
+              {canClear && (
+                <i
+                  className="fas fa-times clear-signature"
+                  onClick={this.clear}
+                  title="Clear Signature"
+                ></i>
+              )}
+            </div>
           )}
           <input {...props} />
         </div>
@@ -835,9 +837,11 @@ class HyperLink extends React.Component {
       <div className={baseClasses}>
         <ComponentHeader {...this.props} />
         <div className="form-group">
-          <a target="_blank" href={this.props.data.href}>
-            {this.props.data.content}
-          </a>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: this.props.data.content,
+            }}
+          />
         </div>
       </div>
     );
