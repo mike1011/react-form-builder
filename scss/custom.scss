@@ -126,9 +126,22 @@ label.custom-label {
   height: 220px;
 }
 .rdw-image-modal {
-  height: 300px;
+  height: 220px;
   left: -50px;
+  .rdw-image-modal-size {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 3px;
+    input.rdw-image-modal-size-input {
+      display: inline-block;
+      width: 70px;
+      height: 20px;
+    }
+  }
 }
 .rdw-emoji-modal {
   left: -50px;
+}
+.rdw-embedded-modal {
+  height: 200px;
 }
