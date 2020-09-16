@@ -176,6 +176,7 @@ label.custom-label {
     display: block;
     .fa-exclamation-triangle {
       font-size: 2rem;
+      float: left;
     }
     ul.float-left li {
       &:before {
