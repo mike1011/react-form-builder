@@ -184,6 +184,7 @@ class TextInput extends React.Component {
   handleChange = (e) => {
     let { value } = e.target;
     this.setState({ value: value });
+    this.props.getValues(this.props.data.field_name, value);
   };
 
   render() {
@@ -224,11 +225,18 @@ class NumberInput extends React.Component {
     this.inputField = React.createRef();
   }
 
+  handleChange = (e) => {
+    let { value } = e.target;
+    this.setState({ value: value });
+    this.props.getValues(this.props.data.field_name, value);
+  };
+
   render() {
     const props = {};
     props.type = "number";
     props.className = "form-control";
     props.name = this.props.data.field_name;
+    props.onChange = this.handleChange;
 
     if (this.props.mutable) {
       props.defaultValue = this.props.defaultValue;
@@ -262,10 +270,17 @@ class TextArea extends React.Component {
     this.inputField = React.createRef();
   }
 
+  handleChange = (e) => {
+    let { value } = e.target;
+    this.setState({ value: value });
+    this.props.getValues(this.props.data.field_name, value);
+  };
+
   render() {
     const props = {};
     props.className = "form-control";
     props.name = this.props.data.field_name;
+    props.onChange = this.handleChange;
 
     if (this.props.read_only) {
       props.disabled = "disabled";
@@ -410,6 +425,7 @@ class DatePicker extends React.Component {
                 placeholder={this.state.placeholder}
                 value={this.state.value}
                 className="form-control"
+                autoComplete="off"
               />
             )}
             {iOS && !readOnly && (
@@ -422,13 +438,13 @@ class DatePicker extends React.Component {
                 placeholder={this.state.placeholder}
                 value={this.state.value}
                 className="form-control"
+                autoComplete="off"
               />
             )}
             {!iOS && !readOnly && (
               <ReactDatePicker
                 name={props.name}
                 ref={props.ref}
-                onChange={this.handleChange}
                 selected={this.state.internalValue}
                 todayButton={"Today"}
                 className="form-control"
@@ -438,6 +454,8 @@ class DatePicker extends React.Component {
                 dateFormat={this.formatMask}
                 portalId="root-portal"
                 placeholderText={placeholderText}
+                autoComplete="off"
+                onChange={this.handleChange}
               />
             )}
           </div>
@@ -458,6 +476,7 @@ class Dropdown extends React.Component {
     this.setState({
       value: value,
     });
+    this.props.getValues(this.props.data.field_name, value);
   };
 
   render() {
@@ -597,6 +616,7 @@ class Tags extends React.Component {
 
   handleChange = (e) => {
     this.setState({ value: e });
+    this.props.getValues(this.props.data.field_name, e);
   };
 
   render() {
@@ -651,6 +671,9 @@ class Checkboxes extends React.Component {
     this.setState((prevState) => ({
       checkedItems: prevState.checkedItems.set(item, isChecked),
     }));
+    let values = this.state.checkedItems;
+    this.props.getValues(this.props.data.field_name, values);
+    return this.state.checkedItems;
   };
 
   render() {
@@ -724,6 +747,7 @@ class RadioButtons extends React.Component {
     this.setState({
       value: value,
     });
+    this.props.getValues(this.props.data.field_name, value);
   };
 
   render() {
@@ -816,7 +840,9 @@ class Image extends React.Component {
             height={this.props.data.height}
           />
         )}
-        {!this.props.data.src && <div className="no-image">No Image</div>}
+        {!this.props.data.src && (
+          <div className="no-image img-responsive">No Image</div>
+        )}
       </div>
     );
   }
@@ -927,6 +953,7 @@ class Camera extends React.Component {
         self.setState({
           img: reader.result,
         });
+        this.props.getValues(this.props.data.field_name, reader.result);
       };
     }
   };
@@ -935,6 +962,7 @@ class Camera extends React.Component {
     this.setState({
       img: null,
     });
+    this.props.getValues(this.props.data.field_name, null);
   };
 
   render() {
@@ -983,7 +1011,7 @@ class Camera extends React.Component {
                   <div className="btn btn-default btn-school">
                     <i className="fas fa-camera"></i> Upload Photo
                   </div>
-                  <p>Select an image from your computer or device.</p>
+                  <p>Add Image</p>
                 </div>
               </div>
 
@@ -992,14 +1020,14 @@ class Camera extends React.Component {
                   <img
                     src={this.state.img}
                     height="100"
-                    className="image-upload-preview"
+                    className="image-upload-preview img-responsive"
                   />
                   <br />
                   <div
                     className="btn btn-school btn-image-clear"
                     onClick={this.clearImage}
                   >
-                    <i className="fas fa-times"></i> Clear Photo
+                    <i className="fas fa-times"></i> Clear
                   </div>
                 </div>
               )}
@@ -1028,6 +1056,7 @@ class Range extends React.Component {
     this.setState({
       value: target.value,
     });
+    this.props.getValues(this.props.data.field_name, target.value);
   };
 
   render() {
@@ -1088,8 +1117,14 @@ class Range extends React.Component {
           <ComponentLabel {...this.props} />
           <div className="range">
             <div className="clearfix">
-              <span className="float-left">{this.props.data.min_label}</span>
-              <span className="float-right">{this.props.data.max_label}</span>
+              <span className="float-left">
+                {this.props.data.min_label}
+                <small className="badge badge-info">{props.min}</small>
+              </span>
+              <span className="float-right">
+                {this.props.data.max_label}
+                <small className="badge badge-info">{props.max}</small>
+              </span>
             </div>
             <ReactBootstrapSlider {...props} />
           </div>

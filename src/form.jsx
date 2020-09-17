@@ -42,6 +42,11 @@ export default class ReactForm extends React.Component {
     return this.answerData[item.field_name];
   }
 
+  getValues = (id, values) => {
+    let stateCopy = Object.assign({}, { [id]: values });
+    this.setState(stateCopy);
+  };
+
   _optionsDefaultValue(item) {
     const defaultValue = this._getDefaultValue(item);
     if (defaultValue) {
@@ -253,6 +258,7 @@ export default class ReactForm extends React.Component {
         data={item}
         read_only={this.props.read_only}
         defaultValue={this._getDefaultValue(item)}
+        getValues={this.getValues}
       />
     );
   }
@@ -316,6 +322,7 @@ export default class ReactForm extends React.Component {
               key={`form_${item.id}`}
               data={item}
               defaultValue={this._optionsDefaultValue(item)}
+              getValues={this.getValues}
             />
           );
         case "Image":
@@ -327,6 +334,7 @@ export default class ReactForm extends React.Component {
               key={`form_${item.id}`}
               data={item}
               defaultValue={this._getDefaultValue(item)}
+              getValues={this.getValues}
             />
           );
         case "Download":
@@ -347,6 +355,7 @@ export default class ReactForm extends React.Component {
               key={`form_${item.id}`}
               data={item}
               defaultValue={this._getDefaultValue(item)}
+              getValues={this.getValues}
             />
           );
         default:

@@ -158,12 +158,25 @@ label.custom-label {
     margin-left: 40px;
   }
 }
-.slider .slider-track {
-  .slider-selection {
-    background: #4fe44f;
+.range {
+  padding: 20px 0;
+  .clearfix {
+    padding: 12px 0;
   }
-  .slider-track-high {
-    background: #d8474733;
+  .float-left,
+  .float-right {
+    color: #777;
+    .badge {
+      margin-left: 5px;
+    }
+  }
+  .slider .slider-track {
+    .slider-selection {
+      background: #a8d6a8;
+    }
+    .slider-track-high {
+      background: #d8474733;
+    }
   }
 }
 
@@ -192,4 +205,17 @@ label.custom-label {
       float: right;
     }
   }
+}
+
+.fadeOut {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  transition: width 0.5s 0.5s, height 0.5s 0.5s, opacity 0.5s;
+}
+.fadeIn {
+  opacity: 1;
+  width: 100px;
+  height: 100px;
+  transition: width 0.5s, height 0.5s, opacity 0.5s 0.5s;
 }
