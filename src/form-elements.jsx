@@ -181,11 +181,17 @@ class TextInput extends React.Component {
     this.inputField = React.createRef();
   }
 
+  handleChange = (e) => {
+    let { value } = e.target;
+    this.setState({ value: value });
+  };
+
   render() {
     const props = {};
     props.type = "text";
     props.className = "form-control";
     props.name = this.props.data.field_name;
+    props.onChange = this.handleChange;
     if (this.props.mutable) {
       props.defaultValue = this.props.defaultValue;
       props.ref = this.inputField;
@@ -447,10 +453,18 @@ class Dropdown extends React.Component {
     this.inputField = React.createRef();
   }
 
+  handleChange = (e) => {
+    let { value } = e.target;
+    this.setState({
+      value: value,
+    });
+  };
+
   render() {
     const props = {};
     props.className = "form-control";
     props.name = this.props.data.field_name;
+    props.onChange = this.handleChange;
 
     if (this.props.mutable) {
       props.defaultValue = this.props.defaultValue;
@@ -626,7 +640,18 @@ class Checkboxes extends React.Component {
   constructor(props) {
     super(props);
     this.options = {};
+    this.state = {
+      checkedItems: new Map(),
+    };
   }
+
+  handleChange = (e) => {
+    const item = e.target.name;
+    const isChecked = e.target.checked;
+    this.setState((prevState) => ({
+      checkedItems: prevState.checkedItems.set(item, isChecked),
+    }));
+  };
 
   render() {
     const self = this;
@@ -652,6 +677,7 @@ class Checkboxes extends React.Component {
 
             props.type = "checkbox";
             props.value = option.value;
+            props.onChange = this.handleChange;
             if (self.props.mutable) {
               props.defaultChecked =
                 self.props.defaultValue !== undefined &&
@@ -693,6 +719,13 @@ class RadioButtons extends React.Component {
     this.options = {};
   }
 
+  handleChange = (e) => {
+    let { value } = e.target;
+    this.setState({
+      value: value,
+    });
+  };
+
   render() {
     const self = this;
     let classNames = "custom-control custom-radio";
@@ -717,6 +750,7 @@ class RadioButtons extends React.Component {
 
             props.type = "radio";
             props.value = option.value;
+            props.onChange = this.handleChange;
             if (self.props.mutable) {
               props.defaultChecked =
                 self.props.defaultValue !== undefined &&
