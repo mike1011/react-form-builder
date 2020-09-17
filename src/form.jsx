@@ -45,6 +45,9 @@ export default class ReactForm extends React.Component {
   getValues = (id, values) => {
     let stateCopy = Object.assign({}, { [id]: values });
     this.setState(stateCopy);
+    if (typeof this.props.getStates === "function") {
+      this.props.getStates(stateCopy);
+    }
   };
 
   _optionsDefaultValue(item) {
