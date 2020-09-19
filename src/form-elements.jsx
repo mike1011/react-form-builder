@@ -814,7 +814,7 @@ class Image extends React.Component {
   render() {
     const style = this.props.data.center ? { textAlign: "center" } : null;
 
-    let baseClasses = "SortableItem rfb-item";
+    let baseClasses = "SortableItem rfb-item image";
     if (this.props.data.pageBreakBefore) {
       baseClasses += " alwaysbreak";
     }
@@ -890,7 +890,7 @@ class Thumbnail extends React.Component {
   render() {
     const style = this.props.data.center ? { textAlign: "center" } : null;
 
-    let baseClasses = "SortableItem rfb-item";
+    let baseClasses = "SortableItem rfb-item thumbnail";
     if (this.props.data.pageBreakBefore) {
       baseClasses += " alwaysbreak";
     }
@@ -917,38 +917,36 @@ class Thumbnail extends React.Component {
       }
     }
     return (
-      <div>
-        <div className={baseClasses} style={style}>
-          {!this.props.mutable && (
-            <HeaderBar
-              parent={this.props.parent}
-              editModeOn={this.props.editModeOn}
-              data={this.props.data}
-              onDestroy={this.props._onDestroy}
-              onEdit={this.props.onEdit}
-              required={this.props.data.required}
+      <div className={baseClasses} style={style}>
+        {!this.props.mutable && (
+          <HeaderBar
+            parent={this.props.parent}
+            editModeOn={this.props.editModeOn}
+            data={this.props.data}
+            onDestroy={this.props._onDestroy}
+            onEdit={this.props.onEdit}
+            required={this.props.data.required}
+          />
+        )}
+        <div className="thumbnail">
+          {this.props.data.src && this.props.data.src !== null && (
+            <img
+              src={this.props.data.src}
+              width={this.props.data.width ? this.props.data.width : "400"}
+              height={this.props.data.height ? this.props.data.height : "200"}
+              className="img-responsive"
             />
           )}
-          <div className="thumbnail">
-            {this.props.data.src && this.props.data.src !== null && (
-              <img
-                src={this.props.data.src}
-                width={this.props.data.width ? this.props.data.width : "400"}
-                height={this.props.data.height ? this.props.data.height : "200"}
-                className="img-responsive"
-              />
-            )}
-            {!this.props.data.src && (
-              <div className="no-image img-responsive">No Image</div>
-            )}
-            <div className="caption">
-              <p
-                className={classNames}
-                dangerouslySetInnerHTML={{
-                  __html: this.props.data.content,
-                }}
-              />
-            </div>
+          {!this.props.data.src && (
+            <div className="no-image img-responsive">No Image</div>
+          )}
+          <div className="caption">
+            <p
+              className={classNames}
+              dangerouslySetInnerHTML={{
+                __html: this.props.data.content,
+              }}
+            />
           </div>
         </div>
       </div>

@@ -421,6 +421,7 @@ export default class ReactForm extends React.Component {
               </div>
             )}
             {items}
+            <br></br>
             <div className="btn-toolbar">
               {!this.props.hide_actions && (
                 <input
