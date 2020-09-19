@@ -325,7 +325,7 @@ export default class FormElementsEdit extends React.Component {
       existingThumbnailImageUrl: "",
       imgThumbnailUrl: "",
       //for element Image
-      imgThumbnailUrlForImageElement: "",
+      imgForImageElement: "",
     };
   }
 
@@ -343,7 +343,7 @@ export default class FormElementsEdit extends React.Component {
     if (this.props.element.src && this.props.element.element == "Image") {
       let existingSrc = this.props.element.src;
       this.setState({
-        imgThumbnailUrlForImageElement: existingSrc,
+        imgForImageElement: existingSrc,
       });
     }
   }
@@ -383,7 +383,7 @@ export default class FormElementsEdit extends React.Component {
     //for IMAGE element
     if (e.target.id === "srcInput") {
       this.setState({
-        imgThumbnailUrlForImageElement: e.target[targProperty],
+        imgForImageElement: e.target[targProperty],
       });
     }
 
@@ -456,8 +456,19 @@ export default class FormElementsEdit extends React.Component {
   clearInputThumbnailUrlImage = () => {
     if (document.getElementById("input_thumbnail_url") !== null) {
       document.getElementById("input_thumbnail_url").value = null;
+      this.setState({ imgThumbnailUrl: "" });
     }
   };
+
+  validateThumbnailImageSize(file, limitSize = 1) {
+    let fileSize = file.size / 1024 / 1024; // in MB
+    if (fileSize > limitSize) {
+      alert("File size exceeds 1 MB");
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   displayThumbnailImage = (e) => {
     // const self = this;
@@ -465,12 +476,15 @@ export default class FormElementsEdit extends React.Component {
     let file;
     let reader;
 
-    if (target.files && target.files.length) {
+    if (
+      target.files &&
+      target.files.length &&
+      this.validateThumbnailImageSize(target.files[0])
+    ) {
       file = target.files[0];
       // eslint-disable-next-line no-undef
       reader = new FileReader();
       reader.readAsDataURL(file);
-
       reader.onloadend = () => {
         this.setState(
           {
@@ -479,7 +493,7 @@ export default class FormElementsEdit extends React.Component {
           function () {
             const this_element = this.state.element;
             this_element["src"] = this.state.img; //e.target["value"];
-            // console.log(this_element);
+            // console.log("==========", file);
             // console.log("uploaded");
             this.setState(
               {
@@ -672,10 +686,10 @@ export default class FormElementsEdit extends React.Component {
                       "checked"
                     )}
                   />
-                  {this.state.imgThumbnailUrlForImageElement && (
+                  {this.state.imgForImageElement && (
                     <div>
                       <img
-                        src={this.state.imgThumbnailUrlForImageElement}
+                        src={this.state.imgForImageElement}
                         height="220"
                         className="image-upload-preview img-responsive"
                       />
@@ -756,7 +770,7 @@ export default class FormElementsEdit extends React.Component {
                 <div className="well">
                   {!this.state.toggleChecked ? (
                     <div className="add-image-url-container">
-                      <h6> Add public URL of the Image</h6>
+                      <h4> Add Image URL </h4>
                       <div className="form-group">
                         <label
                           className="control-label control-edit"
@@ -797,7 +811,7 @@ export default class FormElementsEdit extends React.Component {
                     </div>
                   ) : (
                     <div className="add-local-image-container">
-                      <h6> Add Image from your Computer or Local Drive</h6>
+                      <h4> Add Image from your Computer or Local Drive</h4>
                       <div className="form-group">
                         <div className="image-upload-container">
                           {!this.state.img && (
@@ -816,6 +830,9 @@ export default class FormElementsEdit extends React.Component {
                                   <i className="fas fa-plus-circle"></i> Add
                                   Image
                                 </div>
+                                <p className="text-info">
+                                  Note: Size must not exceed 1 MB
+                                </p>
                               </div>
                             </div>
                           )}

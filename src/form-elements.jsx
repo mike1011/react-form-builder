@@ -927,7 +927,7 @@ class Thumbnail extends React.Component {
             />
           )}
           <div className="thumbnail">
-            {this.props.data.src !== null && (
+            {this.props.data.src && this.props.data.src !== null && (
               <img
                 src={this.props.data.src}
                 width={this.props.data.width ? this.props.data.width : "400"}
