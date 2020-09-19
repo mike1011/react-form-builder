@@ -200,7 +200,7 @@ export default class Toolbar extends React.Component {
         key: "Thumbnail",
         name: "Thumbnail",
         label: "",
-        icon: "fas fa-users",
+        icon: "fas fa-image",
         field_name: "thumbnail_",
         src: "",
         content: "Add title",
@@ -385,8 +385,14 @@ export default class Toolbar extends React.Component {
   }
 
   render() {
+    const toggle = this.props.handletoggleToolbar;
     return (
-      <div className="react-form-builder-toolbar float-right">
+      <div
+        className={`react-form-builder-toolbar ${
+          toggle ? " toolbar-is-hidden" : " toolbar-is-present"
+        }`}
+        style={{ display: toggle ? "none" : "block" }}
+      >
         <h4>Drag & Drop</h4>
         <ul>
           {this.state.items.map((item) => (

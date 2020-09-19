@@ -1,12 +1,14 @@
 .react-form-builder {
+  padding: 30px;
   .react-form-builder-preview {
     position: relative;
-    width: 70%;
+    // width: 70%;
     border: 1px solid #ddd;
-    background: #fafafa;
+    background: #fff;
     padding: 10px;
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
-    min-height: 750px;
+    max-height: 750px;
+    overflow-y: auto;
 
     .preview-page-break {
       padding: 5px 0;
@@ -64,12 +66,12 @@
       border-left: 0;
       box-shadow: none;
       top: 0;
-      left: -1000px;
+      left: 0;
       height: 100%;
-      // width: 0;
-      width: 715px;
+      width: 0;
       transition: 0.5s;
       overflow-y: auto;
+      opacity: 0;
 
       h4,
       .dismiss-edit {
@@ -248,17 +250,16 @@
         background: #eee;
         border-right: 1px solid #ddd;
         box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
-        // width: 80%;
-        left: 0;
+        width: 70%;
         transition: 0.5s;
+        opacity: 1;
       }
     }
   }
 
   .react-form-builder-toolbar {
-    width: 250px;
-    background: #fff;
-    margin-top: -30px;
+    // width: 250px;
+    // margin-top: -30px;
 
     h4 {
       margin-top: 0;
@@ -269,6 +270,7 @@
       border: 1px dashed #ddd;
     }
     ul {
+      background: #fff;
       padding: 0;
       li {
         cursor: pointer;

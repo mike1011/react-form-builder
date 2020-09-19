@@ -21,6 +21,7 @@ export default class Preview extends React.Component {
     this.state = {
       data: [],
       answer_data: {},
+      toggleToolbar: false,
     };
     this.seq = 0;
 
@@ -154,15 +155,42 @@ export default class Preview extends React.Component {
     );
   }
 
+  componentDidMount() {
+    let toggleReceived = this.props.handletoggleToolbar;
+    this.setState({ toggleToolbar: toggleReceived });
+  }
+
+  updateCurrentToolBarToggle = () => {
+    let currentState = this.state.toggleToolbar;
+    this.setState({ toggleToolbar: !currentState });
+    this.props.getToggleState(!currentState);
+  };
+
   render() {
     let classes = this.props.className;
     if (this.props.editMode) {
       classes += " is-editing";
     }
+    classes += this.state.toggleToolbar
+      ? " toolbar-is-hidden"
+      : " toolbar-is-present";
     const data = this.state.data.filter((x) => !!x);
     const items = data.map((item, index) => this.getElement(item, index));
     return (
       <div className={classes}>
+        <h4 className="text-center">
+          <span className="badge badge-success">{items.length}</span> Components
+          <span
+            className="btn float-right btn-link"
+            onClick={this.updateCurrentToolBarToggle}
+          >
+            <i
+              className={`fa fa-chevron-${
+                this.state.toggleToolbar ? "left" : "right"
+              }`}
+            ></i>
+          </span>
+        </h4>
         <div className="edit-form" ref={this.editForm}>
           {this.props.editElement !== null && (
             <FormElementsEdit
@@ -192,5 +220,5 @@ Preview.defaultProps = {
   files: [],
   editMode: false,
   editElement: null,
-  className: "react-form-builder-preview float-left",
+  className: "react-form-builder-preview",
 };

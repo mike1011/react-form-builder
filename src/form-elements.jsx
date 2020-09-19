@@ -831,16 +831,19 @@ class Image extends React.Component {
             required={this.props.data.required}
           />
         )}
-        {this.props.data.src && (
-          <img
-            src={this.props.data.src}
-            width={this.props.data.width ? this.props.data.width : "400"}
-            height={this.props.data.height ? this.props.data.height : "200"}
-          />
-        )}
-        {!this.props.data.src && (
-          <div className="no-image img-responsive">No Image</div>
-        )}
+        <div className="thumbnail">
+          {this.props.data.src && (
+            <img
+              src={this.props.data.src}
+              width={this.props.data.width ? this.props.data.width : "400"}
+              height={this.props.data.height ? this.props.data.height : "200"}
+              className="img-responsive"
+            />
+          )}
+          {!this.props.data.src && (
+            <div className="no-image img-responsive">No Image</div>
+          )}
+        </div>
       </div>
     );
   }

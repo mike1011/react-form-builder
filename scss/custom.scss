@@ -1,3 +1,19 @@
+.react-form-builder-preview.toolbar-is-present {
+  width: 70%;
+}
+
+.react-form-builder-toolbar.toolbar-is-present {
+  width: 28%;
+  background: #fff;
+  h4 {
+    padding: 10px;
+  }
+}
+
+.react-form-builder-preview.toolbar-is-hidden {
+  width: 70%;
+}
+
 .modal.show.d-block {
   overflow-x: hidden;
   overflow-y: auto;
@@ -5,8 +21,13 @@
 
 .react-form-builder > div {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  align-items: stretch;
+  flex-direction: row;
+  background: #eee;
+  padding: 40px;
+  width: 100%;
+  margin: 0;
 }
 
 .modal {
@@ -23,7 +44,7 @@
 .react-form-builder {
   .react-form-builder-toolbar {
     position: relative;
-    right: 60px;
+    // right: 60px;
     ul {
       max-height: 100vh;
       overflow-y: auto;

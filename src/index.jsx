@@ -18,6 +18,7 @@ class ReactFormBuilder extends React.Component {
     this.state = {
       editMode: false,
       editElement: null,
+      toggleToolbar: false,
     };
   }
 
@@ -40,7 +41,12 @@ class ReactFormBuilder extends React.Component {
     }
   }
 
+  getToggleState = (toggle) => {
+    this.setState({ toggleToolbar: toggle });
+  };
+
   render() {
+    const { toggleToolbar } = this.state;
     const toolbarProps = {
       showDescription: this.props.show_description,
     };
@@ -75,9 +81,14 @@ class ReactFormBuilder extends React.Component {
                 variables={this.props.variables}
                 handleChange={this.state.value}
                 editElement={this.state.editElement}
+                handletoggleToolbar={this.state.toggleToolbar}
+                getToggleState={this.getToggleState}
               />
 
-              <Toolbar {...toolbarProps} />
+              <Toolbar
+                {...toolbarProps}
+                handletoggleToolbar={this.state.toggleToolbar}
+              />
             </div>
           </div>
         </div>
