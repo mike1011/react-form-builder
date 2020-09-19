@@ -38,9 +38,7 @@ const ComponentLabel = (props) => {
 
   return (
     <label className={`${props.className} custom-label` || ""}>
-      <div
-        dangerouslySetInnerHTML={{ __html: myxss.process(props.data.label) }}
-      />
+      <div dangerouslySetInnerHTML={{ __html: props.data.label }} />
       {hasRequiredLabel && (
         <span className="label-required badge badge-muted">Required</span>
       )}
@@ -836,13 +834,120 @@ class Image extends React.Component {
         {this.props.data.src && (
           <img
             src={this.props.data.src}
-            width={this.props.data.width}
-            height={this.props.data.height}
+            width={this.props.data.width ? this.props.data.width : "400"}
+            height={this.props.data.height ? this.props.data.height : "200"}
           />
         )}
         {!this.props.data.src && (
           <div className="no-image img-responsive">No Image</div>
         )}
+      </div>
+    );
+  }
+}
+
+class Thumbnail extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { img: null };
+  }
+
+  componentDidUpdate() {
+    // console.log(">>>>>>", this.props.data.src);
+  }
+
+  displayImage = (e) => {
+    const self = this;
+    const target = e.target;
+    let file;
+    let reader;
+
+    if (target.files && target.files.length) {
+      file = target.files[0];
+      // eslint-disable-next-line no-undef
+      reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onloadend = () => {
+        self.setState({
+          img: reader.result,
+        });
+        // this.props.getValues(this.props.data.field_name, reader.result);
+      };
+    }
+  };
+
+  clearImage = () => {
+    this.setState({
+      img: null,
+    });
+    this.props.getValues(this.props.data.field_name, null);
+  };
+
+  render() {
+    const style = this.props.data.center ? { textAlign: "center" } : null;
+
+    let baseClasses = "SortableItem rfb-item";
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += " alwaysbreak";
+    }
+    const name = this.props.data.field_name;
+    const fileInputStyle = this.state.img ? { display: "none" } : null;
+    if (this.props.data.pageBreakBefore) {
+      baseClasses += " alwaysbreak";
+    }
+    let classNames = "static";
+    if (this.props.data.bold) {
+      classNames += " bold";
+    }
+
+    let sourceDataURL;
+    if (
+      this.props.read_only === true &&
+      this.props.defaultValue &&
+      this.props.defaultValue.length > 0
+    ) {
+      if (this.props.defaultValue.indexOf(name > -1)) {
+        sourceDataURL = this.props.defaultValue;
+      } else {
+        sourceDataURL = `data:image/png;base64,${this.props.defaultValue}`;
+      }
+    }
+    return (
+      <div>
+        <div className={baseClasses} style={style}>
+          {!this.props.mutable && (
+            <HeaderBar
+              parent={this.props.parent}
+              editModeOn={this.props.editModeOn}
+              data={this.props.data}
+              onDestroy={this.props._onDestroy}
+              onEdit={this.props.onEdit}
+              required={this.props.data.required}
+            />
+          )}
+          <div className="thumbnail">
+            {this.props.data.src !== null && (
+              <img
+                src={this.props.data.src}
+                width={this.props.data.width ? this.props.data.width : "400"}
+                height={this.props.data.height ? this.props.data.height : "200"}
+                className="img-responsive"
+              />
+            )}
+            {!this.props.data.src && (
+              <div className="no-image img-responsive">No Image</div>
+            )}
+            <div className="caption">
+              <p
+                className={classNames}
+                dangerouslySetInnerHTML={{
+                  __html: this.props.data.content,
+                }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -1150,6 +1255,7 @@ FormElements.Checkboxes = Checkboxes;
 FormElements.DatePicker = DatePicker;
 FormElements.RadioButtons = RadioButtons;
 FormElements.Image = Image;
+FormElements.Thumbnail = Thumbnail;
 FormElements.Rating = Rating;
 FormElements.Tags = Tags;
 FormElements.HyperLink = HyperLink;

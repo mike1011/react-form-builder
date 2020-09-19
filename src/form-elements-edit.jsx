@@ -12,6 +12,7 @@ import DynamicOptionList from "./dynamic-option-list";
 import { get } from "./stores/requests";
 import ID from "./UUID";
 const shortid = require("shortid");
+import Switch from "react-switch";
 
 const toolbar = {
   options: [
@@ -319,6 +320,12 @@ export default class FormElementsEdit extends React.Component {
       element: this.props.element,
       data: this.props.data,
       dirty: false,
+      img: null,
+      toggleChecked: false,
+      existingThumbnailImageUrl: "",
+      imgThumbnailUrl: "",
+      //for element Image
+      imgThumbnailUrlForImageElement: "",
     };
   }
 
@@ -326,11 +333,59 @@ export default class FormElementsEdit extends React.Component {
     // const this_element = this.state.element;
   }
 
+  componentDidMount() {
+    if (this.props.element.src && this.props.element.element == "Thumbnail") {
+      let existingSrc = this.props.element.src;
+      this.setState({
+        imgThumbnailUrl: existingSrc,
+      });
+    }
+    if (this.props.element.src && this.props.element.element == "Image") {
+      let existingSrc = this.props.element.src;
+      this.setState({
+        imgThumbnailUrlForImageElement: existingSrc,
+      });
+    }
+  }
+
+  handleToggleChange = () => {
+    let currentState = this.state.toggleChecked;
+
+    if (document.getElementById("input_thumbnail_url") !== null) {
+      const tempImgUrl = document.getElementById("input_thumbnail_url").value;
+      const existingUrl = this.state.existingThumbnailImageUrl;
+      if (tempImgUrl !== existingUrl) {
+        this.setState({
+          existingThumbnailImageUrl: tempImgUrl,
+        });
+      }
+    }
+    this.setState({
+      toggleChecked: !currentState,
+    });
+  };
+
   editElementProp(elemProperty, targProperty, e) {
     // elemProperty could be content or label
     // targProperty could be value or checked
     const this_element = this.state.element;
     this_element[elemProperty] = e.target[targProperty];
+    // console.log("===what====", elemProperty, targProperty);
+    // console.log(this_element);
+    // console.log(this_element[elemProperty]);
+    //update the image preview too
+    //for THUMBNAIL ELEMENT
+    if (e.target.id === "input_thumbnail_url") {
+      this.setState({
+        imgThumbnailUrl: e.target[targProperty],
+      });
+    }
+    //for IMAGE element
+    if (e.target.id === "srcInput") {
+      this.setState({
+        imgThumbnailUrlForImageElement: e.target[targProperty],
+      });
+    }
 
     this.setState(
       {
@@ -397,6 +452,57 @@ export default class FormElementsEdit extends React.Component {
       });
     }
   }
+
+  clearInputThumbnailUrlImage = () => {
+    if (document.getElementById("input_thumbnail_url") !== null) {
+      document.getElementById("input_thumbnail_url").value = null;
+    }
+  };
+
+  displayThumbnailImage = (e) => {
+    // const self = this;
+    const target = e.target;
+    let file;
+    let reader;
+
+    if (target.files && target.files.length) {
+      file = target.files[0];
+      // eslint-disable-next-line no-undef
+      reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onloadend = () => {
+        this.setState(
+          {
+            img: reader.result,
+          },
+          function () {
+            const this_element = this.state.element;
+            this_element["src"] = this.state.img; //e.target["value"];
+            // console.log(this_element);
+            // console.log("uploaded");
+            this.setState(
+              {
+                element: this_element,
+                dirty: true,
+                existingThumbnailImageUrl: "",
+              },
+              () => {
+                this.updateElement();
+                console.log("element updated");
+              }
+            );
+          }
+        );
+      };
+    }
+  };
+
+  clearThumbnailImage = () => {
+    this.setState({
+      img: null,
+    });
+  };
 
   render() {
     if (this.state.dirty) {
@@ -533,85 +639,278 @@ export default class FormElementsEdit extends React.Component {
             />
           </div>
         )}
-        {this.props.element.hasOwnProperty("src") && (
-          <div>
-            <div className="form-group">
-              <label className="control-label control-edit" htmlFor="srcInput">
-                Link to:
-              </label>
-              <input
-                id="srcInput"
-                type="text"
-                className="form-control"
-                defaultValue={this.props.element.src}
-                onBlur={this.updateElement.bind(this)}
-                onChange={this.editElementProp.bind(this, "src", "value")}
-              />
-            </div>
-            <div className="form-group">
-              <div className="custom-control custom-checkbox">
-                <input
-                  id="do-center"
-                  className="custom-control-input"
-                  type="checkbox"
-                  checked={this_checked_center}
-                  value={true}
-                  onChange={this.editElementProp.bind(
-                    this,
-                    "center",
-                    "checked"
-                  )}
-                />
+        {this.props.element.hasOwnProperty("src") &&
+          this.state.element.element !== "Thumbnail" && (
+            <div>
+              <div className="form-group">
                 <label
-                  className="custom-control-label control-edit"
-                  htmlFor="do-center"
+                  className="control-label control-edit"
+                  htmlFor="srcInput"
                 >
-                  Center?
+                  Link to:
                 </label>
+                <input
+                  id="srcInput"
+                  type="text"
+                  className="form-control"
+                  defaultValue={this.props.element.src}
+                  onBlur={this.updateElement.bind(this)}
+                  onChange={this.editElementProp.bind(this, "src", "value")}
+                />
               </div>
-            </div>
-            <div className="form-group">
-              <div className="row">
-                <div className="col-sm-3">
-                  <label
-                    className="control-label control-edit"
-                    htmlFor="elementWidth"
-                  >
-                    Width:
-                  </label>
+              <div className="form-group">
+                <div className="custom-control custom-checkbox">
                   <input
-                    id="elementWidth"
-                    type="text"
-                    className="form-control"
-                    defaultValue={this.props.element.width}
-                    onBlur={this.updateElement.bind(this)}
-                    onChange={this.editElementProp.bind(this, "width", "value")}
-                  />
-                </div>
-                <div className="col-sm-3">
-                  <label
-                    className="control-label control-edit"
-                    htmlFor="elementHeight"
-                  >
-                    Height:
-                  </label>
-                  <input
-                    id="elementHeight"
-                    type="text"
-                    className="form-control"
-                    defaultValue={this.props.element.height}
-                    onBlur={this.updateElement.bind(this)}
+                    id="do-center"
+                    className="custom-control-input"
+                    type="checkbox"
+                    checked={this_checked_center}
+                    value={true}
                     onChange={this.editElementProp.bind(
                       this,
-                      "height",
-                      "value"
+                      "center",
+                      "checked"
                     )}
                   />
+                  {this.state.imgThumbnailUrlForImageElement && (
+                    <div>
+                      <img
+                        src={this.state.imgThumbnailUrlForImageElement}
+                        height="220"
+                        className="image-upload-preview img-responsive"
+                      />
+                    </div>
+                  )}
+                  <label
+                    className="custom-control-label control-edit"
+                    htmlFor="do-center"
+                  >
+                    Center?
+                  </label>
+                </div>
+              </div>
+              <div className="form-group">
+                <div className="row">
+                  <div className="col-sm-3">
+                    <label
+                      className="control-label control-edit"
+                      htmlFor="elementWidth"
+                    >
+                      Width:
+                    </label>
+                    <input
+                      id="elementWidth"
+                      type="text"
+                      className="form-control"
+                      defaultValue={this.props.element.width}
+                      onBlur={this.updateElement.bind(this)}
+                      onChange={this.editElementProp.bind(
+                        this,
+                        "width",
+                        "value"
+                      )}
+                    />
+                  </div>
+                  <div className="col-sm-3">
+                    <label
+                      className="control-label control-edit"
+                      htmlFor="elementHeight"
+                    >
+                      Height:
+                    </label>
+                    <input
+                      id="elementHeight"
+                      type="text"
+                      className="form-control"
+                      defaultValue={this.props.element.height}
+                      onBlur={this.updateElement.bind(this)}
+                      onChange={this.editElementProp.bind(
+                        this,
+                        "height",
+                        "value"
+                      )}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+        {this.state.element.element === "Thumbnail" && (
+          <div className="thumbnail-edit-form">
+            <div className="toggleSwitchThumbnail">
+              <div className="left">Add Image URL</div>
+              <Switch
+                onChange={this.handleToggleChange}
+                checked={this.state.toggleChecked}
+                className="middle"
+                onColor="#008800"
+                offColor="#008800"
+                uncheckedIcon={false}
+                checkedIcon={false}
+              />
+              <div className="right">Add Image</div>
+            </div>
+            <div>
+              <div className="thumbnail-container-edit">
+                <div className="well">
+                  {!this.state.toggleChecked ? (
+                    <div className="add-image-url-container">
+                      <h6> Add public URL of the Image</h6>
+                      <div className="form-group">
+                        <label
+                          className="control-label control-edit"
+                          htmlFor="input_thumbnail_url"
+                        >
+                          Link to:
+                          {this.state.imgThumbnailUrl && (
+                            <span
+                              className="float-right clear-input-image-url-btn"
+                              onClick={this.clearInputThumbnailUrlImage}
+                            >
+                              x clear
+                            </span>
+                          )}
+                        </label>
+                        <input
+                          id="input_thumbnail_url"
+                          type="text"
+                          className="form-control"
+                          defaultValue={this.props.element.src}
+                          onBlur={this.updateElement.bind(this)}
+                          onChange={this.editElementProp.bind(
+                            this,
+                            "src",
+                            "value"
+                          )}
+                        />
+                        {this.state.imgThumbnailUrl && (
+                          <div>
+                            <img
+                              src={this.state.imgThumbnailUrl}
+                              height="220"
+                              className="image-upload-preview img-responsive"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="add-local-image-container">
+                      <h6> Add Image from your Computer or Local Drive</h6>
+                      <div className="form-group">
+                        <div className="image-upload-container">
+                          {!this.state.img && (
+                            <div>
+                              <input
+                                name={name}
+                                type="file"
+                                accept="image/*"
+                                id="input_thumbnail"
+                                capture="camera"
+                                className="image-upload"
+                                onChange={this.displayThumbnailImage}
+                              />
+                              <div className="image-upload-control">
+                                <div className="btn btn-default btn-school">
+                                  <i className="fas fa-plus-circle"></i> Add
+                                  Image
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          {this.state.img && (
+                            <div>
+                              <img
+                                src={this.state.img}
+                                height="220"
+                                className="image-upload-preview img-responsive"
+                              />
+                              <br />
+                              <div
+                                className="btn-thumbnail-image-clear"
+                                onClick={this.clearThumbnailImage}
+                              >
+                                <i className="fas fa-times"></i> Clear
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div className="form-group">
+                    <div className="custom-control custom-checkbox">
+                      <input
+                        id="do-center"
+                        className="custom-control-input"
+                        type="checkbox"
+                        checked={this_checked_center}
+                        value={true}
+                        onChange={this.editElementProp.bind(
+                          this,
+                          "center",
+                          "checked"
+                        )}
+                      />
+                      <label
+                        className="custom-control-label control-edit"
+                        htmlFor="do-center"
+                      >
+                        Center?
+                      </label>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <div className="row">
+                      <div className="col-sm-3">
+                        <label
+                          className="control-label control-edit"
+                          htmlFor="elementWidth"
+                        >
+                          Width:
+                        </label>
+                        <input
+                          id="elementWidth"
+                          type="text"
+                          className="form-control"
+                          defaultValue={this.props.element.width}
+                          onBlur={this.updateElement.bind(this)}
+                          onChange={this.editElementProp.bind(
+                            this,
+                            "width",
+                            "value"
+                          )}
+                        />
+                      </div>
+                      <div className="col-sm-3">
+                        <label
+                          className="control-label control-edit"
+                          htmlFor="elementHeight"
+                        >
+                          Height:
+                        </label>
+                        <input
+                          id="elementHeight"
+                          type="text"
+                          className="form-control"
+                          defaultValue={this.props.element.height}
+                          onBlur={this.updateElement.bind(this)}
+                          onChange={this.editElementProp.bind(
+                            this,
+                            "height",
+                            "value"
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         )}
+
         {this.props.element.hasOwnProperty("label") && (
           <div className="form-group">
             <label className="control-edit">Display Label</label>

@@ -41,6 +41,7 @@
     "react-select": "^3.0.8",
     "react-signature-canvas": "^1.0.3",
     "react-star-rating": "^1.4.2",
+    "react-switch": "^5.0.1",
     "react-textarea-autosize": "^7.1.2",
     "shortid": "^2.2.15",
     "xss": "^1.0.6"

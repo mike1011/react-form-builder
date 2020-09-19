@@ -197,6 +197,15 @@ export default class Toolbar extends React.Component {
         src: "",
       },
       {
+        key: "Thumbnail",
+        name: "Thumbnail",
+        label: "",
+        icon: "fas fa-users",
+        field_name: "thumbnail_",
+        src: "",
+        content: "Add title",
+      },
+      {
         key: "Rating",
         canHaveAnswer: true,
         name: "Rating",
@@ -318,6 +327,12 @@ export default class Toolbar extends React.Component {
       elementOptions.src = item.src;
     }
 
+    if (item.key === "Thumbnail") {
+      elementOptions.src = item.src;
+      elementOptions.title = item.title;
+      elementOptions.description = item.description;
+    }
+
     if (item.key === "DatePicker") {
       elementOptions.dateFormat = item.dateFormat;
       elementOptions.timeFormat = item.timeFormat;
@@ -372,7 +387,7 @@ export default class Toolbar extends React.Component {
   render() {
     return (
       <div className="react-form-builder-toolbar float-right">
-        <h4>Toolbox</h4>
+        <h4>Drag & Drop</h4>
         <ul>
           {this.state.items.map((item) => (
             <ToolbarItem

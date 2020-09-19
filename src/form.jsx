@@ -8,7 +8,14 @@ import { EventEmitter } from "fbemitter";
 import FormValidator from "./form-validator";
 import FormElements from "./form-elements";
 
-const { Image, Checkboxes, Signature, Download, Camera } = FormElements;
+const {
+  Image,
+  Checkboxes,
+  Signature,
+  Download,
+  Camera,
+  Thumbnail,
+} = FormElements;
 
 export default class ReactForm extends React.Component {
   form;
@@ -352,6 +359,18 @@ export default class ReactForm extends React.Component {
         case "Camera":
           return (
             <Camera
+              ref={(c) => (this.inputs[item.field_name] = c)}
+              read_only={this.props.read_only || item.readOnly}
+              mutable={true}
+              key={`form_${item.id}`}
+              data={item}
+              defaultValue={this._getDefaultValue(item)}
+              getValues={this.getValues}
+            />
+          );
+        case "Thumbnail":
+          return (
+            <Thumbnail
               ref={(c) => (this.inputs[item.field_name] = c)}
               read_only={this.props.read_only || item.readOnly}
               mutable={true}

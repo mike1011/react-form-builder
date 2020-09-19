@@ -1,10 +1,28 @@
-import SortableElement from './sortable-element';
-import PlaceHolder from './form-place-holder';
-import BaseFormElements from './form-elements';
+import SortableElement from "./sortable-element";
+import PlaceHolder from "./form-place-holder";
+import BaseFormElements from "./form-elements";
 
 const {
-  Header, Paragraph, Label, LineBreak, TextInput, NumberInput, TextArea, Dropdown, Checkboxes,
-  DatePicker, RadioButtons, Image, Rating, Tags, Signature, HyperLink, Download, Camera, Range,
+  Header,
+  Paragraph,
+  Label,
+  LineBreak,
+  TextInput,
+  NumberInput,
+  TextArea,
+  Dropdown,
+  Checkboxes,
+  DatePicker,
+  RadioButtons,
+  Image,
+  Thumbnail,
+  Rating,
+  Tags,
+  Signature,
+  HyperLink,
+  Download,
+  Camera,
+  Range,
 } = BaseFormElements;
 
 const FormElements = {};
@@ -22,6 +40,7 @@ FormElements.Checkboxes = SortableElement(Checkboxes);
 FormElements.DatePicker = SortableElement(DatePicker);
 FormElements.RadioButtons = SortableElement(RadioButtons);
 FormElements.Image = SortableElement(Image);
+FormElements.Thumbnail = SortableElement(Thumbnail);
 FormElements.Rating = SortableElement(Rating);
 FormElements.Tags = SortableElement(Tags);
 FormElements.HyperLink = SortableElement(HyperLink);
