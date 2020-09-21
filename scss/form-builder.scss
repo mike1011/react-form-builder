@@ -249,7 +249,7 @@
         z-index: 2000;
         background: #eee;
         border-right: 1px solid #ddd;
-        box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 2px 15px 2px #11111191;
         width: 70%;
         transition: 0.5s;
         opacity: 1;
@@ -337,7 +337,7 @@
       width: 100%;
 
       .edit-form {
-        width: 100%;
+        // width: 100%;
         overflow: scroll;
 
         .btn {
@@ -364,14 +364,14 @@
     .react-form-builder-toolbar {
       h4 {
         padding: 10px;
-        background: #7a0019;
-        color: #fff;
+        // background: #7a0019;
+        // color: #fff;
       }
 
       width: 100%;
       position: fixed;
       z-index: 900;
-      bottom: -320px;
+      // bottom: -320px;
 
       -webkit-transition: transform 0.5s;
       transition: transform 0.5s;

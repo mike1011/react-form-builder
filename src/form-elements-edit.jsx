@@ -857,6 +857,62 @@ export default class FormElementsEdit extends React.Component {
                     </div>
                   )}
                   <div className="form-group">
+                    <div className="row">
+                      <div className="col-sm-12">
+                        <label
+                          className="control-label control-edit"
+                          htmlFor="elementWrapper"
+                        >
+                          Add Wrapper:
+                        </label>
+                        <p className="text-muted">
+                          <span className="fa fa-info-circle"></span> Note:
+                          Wrapper will wrap every thumbnail in one group, so if
+                          you want to group the thumbnails, provide wrapper name
+                        </p>
+                        <input
+                          id="elementWrapper"
+                          type="text"
+                          className="form-control"
+                          defaultValue={this.props.element.wrapper_name}
+                          onBlur={this.updateElement.bind(this)}
+                          onChange={this.editElementProp.bind(
+                            this,
+                            "wrapper_name",
+                            "value"
+                          )}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <div className="row">
+                      <div className="col-sm-12">
+                        <label
+                          className="control-label control-edit"
+                          htmlFor="elementWrapper"
+                        >
+                          Add Description:
+                        </label>
+                        <TextAreaAutosize
+                          type="text"
+                          minRows={5}
+                          maxRows={5}
+                          className="form-control"
+                          id="thumbnailDescription"
+                          defaultValue={this.props.element.description}
+                          onBlur={this.updateElement.bind(this)}
+                          onChange={this.editElementProp.bind(
+                            this,
+                            "description",
+                            "value"
+                          )}
+                          style={{ height: "auto" }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group">
                     <div className="custom-control custom-checkbox">
                       <input
                         id="do-center"

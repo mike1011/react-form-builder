@@ -855,10 +855,6 @@ class Thumbnail extends React.Component {
     this.state = { img: null };
   }
 
-  componentDidUpdate() {
-    // console.log(">>>>>>", this.props.data.src);
-  }
-
   displayImage = (e) => {
     const self = this;
     const target = e.target;
@@ -940,13 +936,25 @@ class Thumbnail extends React.Component {
           {!this.props.data.src && (
             <div className="no-image img-responsive">No Image</div>
           )}
-          <div className="caption">
+          <div
+            className={`caption ${
+              this.props.data.content !== "Add title" &&
+              this.props.data.content !== undefined
+                ? "content-present"
+                : "no-content"
+            }`}
+          >
             <p
               className={classNames}
               dangerouslySetInnerHTML={{
                 __html: this.props.data.content,
               }}
             />
+            {this.props.data.description && (
+              <p className="text-muted description">
+                {this.props.data.description}
+              </p>
+            )}
           </div>
         </div>
       </div>

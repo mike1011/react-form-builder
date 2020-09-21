@@ -1,0 +1,4 @@
+21sept 2020..monday --
+
+Working on making thumbnails ..with wrapper_name to be in common class div...
+

@@ -278,6 +278,14 @@ export default class ReactForm extends React.Component {
     return <Element mutable={true} key={`form_${item.id}`} data={item} />;
   }
 
+  //use like - console.log(groupBy(['one', 'two', 'three'], 'length'));
+  groupBy = function (xs, key) {
+    return xs.reduce(function (rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  };
+
   render() {
     let data_items = this.props.data;
 
@@ -297,6 +305,11 @@ export default class ReactForm extends React.Component {
         ];
       }
     });
+
+    //get items thumbnails
+    const thumbnailsWithWrapperClasses = [
+      ...new Set(data_items.map((item) => item.wrapper_name)),
+    ];
 
     const items = data_items.map((item) => {
       if (!item) return null;

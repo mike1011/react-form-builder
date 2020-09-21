@@ -331,6 +331,7 @@ export default class Toolbar extends React.Component {
       elementOptions.src = item.src;
       elementOptions.title = item.title;
       elementOptions.description = item.description;
+      elementOptions.wrapper_name = item.wrapper_name;
     }
 
     if (item.key === "DatePicker") {
@@ -391,7 +392,7 @@ export default class Toolbar extends React.Component {
         className={`react-form-builder-toolbar ${
           toggle ? " toolbar-is-hidden" : " toolbar-is-present"
         }`}
-        style={{ display: toggle ? "none" : "block" }}
+        style={{ display: toggle ? "none" : "" }}
       >
         <h4>Drag & Drop</h4>
         <ul>
