@@ -450,8 +450,8 @@ export default class ReactForm extends React.Component {
       .groupBy(wrapper_path)
       .value();
 
-    console.log("==========>>>>>", _.uniqBy(items, "key"));
-    console.log("----all items---", getWrappers);
+    // console.log("==========>>>>>", _.uniqBy(items, "key"));
+    // console.log("----all items---", getWrappers);
 
     const formTokenStyle = {
       display: "none",
