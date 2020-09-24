@@ -70,7 +70,7 @@
       height: 100%;
       width: 0;
       transition: 0.5s;
-      overflow-y: auto;
+      // overflow-y: auto;
       opacity: 0;
 
       h4,
@@ -80,7 +80,9 @@
       .dismiss-edit {
         cursor: pointer;
         margin-top: 10px;
-        font-size: 125%;
+        font-size: 2rem;
+        position: absolute;
+        top: 0;
       }
       textarea {
         width: 100%;
@@ -247,12 +249,23 @@
       // }
       .edit-form {
         z-index: 2000;
-        background: #eee;
-        border-right: 1px solid #ddd;
+        background: #d8cece;
+        border-right: 3px solid #777;
         box-shadow: 0px 2px 15px 2px #11111191;
         width: 70%;
         transition: 0.5s;
         opacity: 1;
+        .edit-container {
+          position: relative;
+          .header-container {
+            position: relative;
+          }
+          .body-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 0 12px;
+          }
+        }
       }
     }
   }
@@ -338,7 +351,7 @@
 
       .edit-form {
         // width: 100%;
-        overflow: scroll;
+        // overflow: scroll;
 
         .btn {
           margin-top: 10px;
@@ -383,7 +396,7 @@
       border-top: 2px solid #ccc;
 
       ul {
-        height: 300px;
+        height: 100%;
         overflow-x: scroll;
       }
     }

@@ -2,11 +2,13 @@
  * <Form />
  */
 
-import React from "react";
+import React, { createRef } from "react";
 import ReactDOM from "react-dom";
 import { EventEmitter } from "fbemitter";
 import FormValidator from "./form-validator";
 import FormElements from "./form-elements";
+//dont remove it..its used as legacy methods, like - _.keys
+import { mapKeys, mapValues, groupBy, pickBy, identity, isEmpty } from "lodash";
 
 const {
   Image,
@@ -26,8 +28,13 @@ export default class ReactForm extends React.Component {
 
   constructor(props) {
     super(props);
+    this.wrapper = createRef();
     this.answerData = this._convert(props.answer_data);
     this.emitter = new EventEmitter();
+    //to keep a track of which thumbnail wrapper class is rendered
+    this.state = {
+      thumbnailWrapperElements: {},
+    };
   }
 
   _convert(answers) {
@@ -278,12 +285,53 @@ export default class ReactForm extends React.Component {
     return <Element mutable={true} key={`form_${item.id}`} data={item} />;
   }
 
-  //use like - console.log(groupBy(['one', 'two', 'three'], 'length'));
+  //use like - console.log(this.groupBy(['one', 'two', 'three'], 'length'));
   groupBy = function (xs, key) {
     return xs.reduce(function (rv, x) {
       (rv[x[key]] = rv[x[key]] || []).push(x);
       return rv;
     }, {});
+  };
+
+  //this will stop rendering multiple thumbnails and will render their array once if found for first time
+  setWrapperActive = (wrapper_name) => {
+    this.setState({ [wrapper_name]: true });
+  };
+
+  renderThumbnailWrapper = (wrapper_name) => {
+    // this.setWrapperActive(wrapper_name);
+    // this.setState({ [wrapper_name]: true })
+    return (
+      <div className="test">
+        {this.state.thumbnailWrapperElements[wrapper_name]}
+      </div>
+    );
+  };
+
+  getThumbnailsFromItems = (items) => {
+    let path = "props.data.wrapper_name";
+    //get all elements with key(wrapper_name) => item, without undefined keys(must have wrapper_name)
+    const wrapperElements = _(items)
+      .filter((item) => _.has(item, path))
+      .groupBy(path)
+      .value();
+
+    const wrapperKeys = _.keys(wrapperElements);
+    return wrapperElements;
+
+    // if (!isEmpty(wrapperKeys) && wrapperElements) {
+    //   //set wrappers
+    //   this.setState({
+    //     thumbnailWrapperElements: wrapperElements,
+    //   });
+
+    //   // //set states of all wrapper classes as true, unless called
+    //   // this.wrapperKeys.map((key) => {
+    //   //   this.setState({
+    //   //     [key]: true,
+    //   //   });
+    //   // });
+    // }
   };
 
   render() {
@@ -305,11 +353,6 @@ export default class ReactForm extends React.Component {
         ];
       }
     });
-
-    //get items thumbnails
-    const thumbnailsWithWrapperClasses = [
-      ...new Set(data_items.map((item) => item.wrapper_name)),
-    ];
 
     const items = data_items.map((item) => {
       if (!item) return null;
@@ -398,6 +441,18 @@ export default class ReactForm extends React.Component {
       }
     });
 
+    // if (items) {
+    //   this.getThumbnailsFromItems(items);
+    // }
+    const wrapper_path = "props.data.wrapper_name";
+    const getWrappers = _(items)
+      .filter((item) => _.has(item, wrapper_path))
+      .groupBy(wrapper_path)
+      .value();
+
+    console.log("==========>>>>>", _.uniqBy(items, "key"));
+    console.log("----all items---", getWrappers);
+
     const formTokenStyle = {
       display: "none",
     };
@@ -406,6 +461,8 @@ export default class ReactForm extends React.Component {
       ? this.props.action_name
       : "Submit";
     const backName = this.props.back_name ? this.props.back_name : "Cancel";
+
+    var tempArray = [];
 
     return (
       <div>
@@ -433,7 +490,64 @@ export default class ReactForm extends React.Component {
                 />
               </div>
             )}
-            {items}
+            {_.uniqBy(items, "key").map((item, index) => {
+              if (item.props.data.element === "Thumbnail") {
+                let dataCopy = item.props.data;
+                if (
+                  dataCopy.wrapper_name !== "" &&
+                  dataCopy.wrapper_name !== undefined
+                  // &&
+                  // getWrappers[dataCopy.wrapper_name].length > 1
+                ) {
+                  tempArray.push(item);
+                  if (
+                    tempArray.length ==
+                    getWrappers[dataCopy.wrapper_name].length
+                  ) {
+                    tempArray = [];
+                    return (
+                      <div
+                        ref={this.wrapper}
+                        className={`thumbnail-wrapper-container ${dataCopy.wrapper_name.toLowerCase()}`}
+                        key={item.props.data.id}
+                      >
+                        {getWrappers[dataCopy.wrapper_name].map((item) => {
+                          return (
+                            <div
+                              className="thumbnail-wrapper-item col-md-4"
+                              key={item.props.data.id}
+                            >
+                              {item}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  }
+                  // {
+                  //   _.remove(items, { "props.data.id": item.id });
+                  // }
+                } else {
+                  return item;
+                }
+              } else {
+                return item;
+              }
+              // return (
+              //   <div className="test" key={item.field_name}>
+              //     <Thumbnail
+              //       ref={(c) => (this.inputs[item.field_name] = c)}
+              //       read_only={this.props.read_only || item.readOnly}
+              //       mutable={true}
+              //       key={`form_${item.id}`}
+              //       data={item}
+              //       defaultValue={this._getDefaultValue(item)}
+              //       getValues={this.getValues}
+              //     />
+              //   </div>
+              // );
+            })}
+
             <br></br>
             <div className="btn-toolbar">
               {!this.props.hide_actions && (

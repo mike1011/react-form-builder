@@ -831,7 +831,7 @@ class Image extends React.Component {
             required={this.props.data.required}
           />
         )}
-        <div className="thumbnail">
+        <div className="thumbnail-inner image">
           {this.props.data.src && (
             <img
               src={this.props.data.src}
@@ -924,7 +924,7 @@ class Thumbnail extends React.Component {
             required={this.props.data.required}
           />
         )}
-        <div className="thumbnail">
+        <div className="thumbnail-inner">
           {this.props.data.src && this.props.data.src !== null && (
             <img
               src={this.props.data.src}
