@@ -880,9 +880,7 @@ export default class FormElementsEdit extends React.Component {
                             id="elementWrapper"
                             type="text"
                             className="form-control"
-                            defaultValue={
-                              this.props.element.wrapper_name || "wrapper"
-                            }
+                            defaultValue={this.props.element.wrapper_name}
                             onBlur={this.updateElement.bind(this)}
                             onChange={this.editElementProp.bind(
                               this,

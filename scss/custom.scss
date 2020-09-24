@@ -349,24 +349,25 @@ label.custom-label {
   justify-content: center;
   width: 100%;
   margin: 40px 0;
-  .thumbnail-wrapper-item {
-    width: 100%;
+  .thumbnail-wrapper-item,
+  [class*="col-"] {
     display: block;
-  }
-  [class*="col-"] .thumbnail {
     width: 100%;
-    .thumbnail-inner {
-      img {
-        font-family: object-fit\:cover;
-        object-fit: cover;
-        border-radius: 2px 2px 0px 0px; // background:#eee;
-        width: 100%;
-        height: 200px;
-      }
-      .caption {
-        width: 100%;
-        background: #eee;
-        padding: 20px 10px;
+    .thumbnail {
+      width: 100%;
+      .thumbnail-inner {
+        img {
+          font-family: object-fit\:cover;
+          object-fit: cover;
+          border-radius: 2px 2px 0px 0px; // background:#eee;
+          width: 100%;
+          height: 200px;
+        }
+        .caption {
+          width: 100%;
+          background: #eee;
+          padding: 20px 10px;
+        }
       }
     }
   }
